@@ -1,3 +1,4 @@
 maven build
 Added sonar credentials
 Added more credentials to sonar
+moved target file
