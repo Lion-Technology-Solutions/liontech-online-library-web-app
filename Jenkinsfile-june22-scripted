@@ -1,0 +1,58 @@
+node{
+
+    def  mavenHome   =  tool name :  'maven3.9.2'
+    stage('1-clone the code'){
+        git 'https://github.com/dmissibi/liontech-online-library-web-app.git'
+
+    }
+
+    stage('2-Build and Test'){
+        sh "${mavenHome}/bin/mvn clean package"
+    }
+
+    stage('3-codequalitty-analysis'){
+        sh "${mavenHome}/bin/mvn sonar:sonar"
+    }
+
+    stage('4-upload-2-nexus'){
+        sh "${mavenHome}/bin/mvn deploy"
+    }
+    stage('deploy-dmissibi'){
+        sh "echo 'deploy to dmissibi environment'"
+        deploy adapters: [tomcat9(credentialsId: 'tomcat-deployer', path: '', url: 'http://54.211.209.180:8009/')], contextPath: 'dmissibi', war: 'target/*.war'
+    }
+
+    stage('approvalgate'){
+        sh "echo 'please contact Desmond for approval'"
+        timeout(time:5, unit: 'DAYS'){
+            input message:  'Approve application ready for deployment to dmissibi'
+
+
+        }
+
+    }
+
+    stage('deploy-to-staging'){
+        deploy adapters: [tomcat9(credentialsId: 'tomcat-deployer', path: '', url: 'http://54.211.209.180:8009/')], contextPath: 'stagging', war: 'target/*.war'
+    }
+
+    stage('approvalgate'){
+        sh "echo 'please contact Desmond for approval'"
+        timeout(time:10, unit: 'DAYS'){
+            input message:  'Approve application ready for deployment to prod'
+     }
+
+}
+
+ stage('deploy to prod'){
+
+    deploy adapters: [tomcat9(credentialsId: 'tomcat-deployer', path: '', url: 'http://54.211.209.180:8009/')], contextPath: 'production', war: 'target/*.war'
+ }
+
+ stage('send ms teams notification'){
+
+    office365ConnectorSend message: 'congratulations-to-classs20', webhookUrl: 'https://liontechacademy.webhook.office.com/webhookb2/1c45852e-99e7-4aa7-a7f5-be60526bb887@b290c85e-0692-4ada-8f25-2a3b60aca73e/JenkinsCI/38f55bedaf4142bc8366233b562335b3/90dc930a-1d3a-4c50-9c2d-39d010312f55'
+ }
+
+
+}
