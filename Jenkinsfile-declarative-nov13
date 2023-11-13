@@ -34,6 +34,13 @@ pipeline{
       }
     }
 }
+  stage('notifymsteams'){
+    steps{
+        office365ConnectorSend message: 'liontech-rpod-release-successful', status: 'done', webhookUrl: 'https://liontechacademy.webhook.office.com/webhookb2/7de6738b-f601-433e-b0ac-4a9e3b49e636@b290c85e-0692-4ada-8f25-2a3b60aca73e/JenkinsCI/3c10e40c166c4e918e81ce4fcc7d1a8e/90dc930a-1d3a-4c50-9c2d-39d010312f55'   
+    }
+  }
+
+
   post{
     always{
       emailext body: '''Hey guys
