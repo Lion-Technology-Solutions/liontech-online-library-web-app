@@ -1,0 +1,57 @@
+pipeline{
+    agent any
+    tools {
+
+        maven "maven3.9.5"
+    }
+
+    stages{
+
+        stage('pullfromscm'){
+            steps{
+                sh "echo 'cloning the latest commit from application source code'"
+                git branch: '02-dev', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
+            }
+        }
+    }
+
+    stage('2TestandBuild'){
+        steps{
+            sh "echo 'developers first build'"
+            sh "echo 'jenkins building applications with maven'"
+            sh "mvn clean package"
+        }
+    }
+
+    stage('sonarqubeanalysis'){
+        steps{
+            sh "echo 'performing application or software code quality analysis'"
+            sh "mvn sonar:sonar"
+        }
+    }
+
+    stage('uploadNexus'){
+        steps{
+            sh "mvn deploy"
+        }
+    }
+
+    stage('deploytomcat'){
+        steps{
+           deploy adapters: [tomcat9(credentialsId: 'tomcat-deployer', path: '', url: 'http://3.145.120.48:8009/')], contextPath: 'onlinelibraryapp', war: 'target/*war' 
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
