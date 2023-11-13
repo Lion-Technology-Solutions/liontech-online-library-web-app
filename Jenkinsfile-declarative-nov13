@@ -30,7 +30,7 @@ pipeline{
     } 
     stage('8deploy2prod'){
       steps{
-        deploy adapters: [tomcat8(credentialsId: 'tomcat-credentials', path: '', url: 'http://35.170.249.131:8080/')], contextPath: null, war: 'target/*war'
+        deploy adapters: [tomcat9(credentialsId: 'tomcat-deployer', path: '', url: 'http://3.145.120.48:8009/')], contextPath: 'onlinelibraryapp', war: 'target/*war'
       }
     }
 }
