@@ -7,7 +7,7 @@ pipeline{
     stage('1GetCode'){
       steps{
         sh "echo 'cloning the latest application version' "
-        git branch: '', url: 'https://github.com/Lion-Technology-Solutions/liontech-web-app-jenkins-cicd.git'
+        git branch: '02-dev', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
       }
     }
     stage('3Test+Build'){
