@@ -40,7 +40,7 @@ pipeline{
 Please check build status.
 
 Thanks
-Landmark 
+liontech 
 +1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'success', to: 'paypal-team@gmail.com'
     }
     success{
@@ -48,7 +48,7 @@ Landmark
 Good job build and deployment is successful.
 
 Thanks
-Landmark 
+Lion Tech
 +1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'success', to: 'paypal-team@gmail.com'
     } 
     failure{
