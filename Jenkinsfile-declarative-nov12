@@ -25,7 +25,7 @@ pipeline{
 
     stage('sonarqubeanalysis'){
         steps{
-            sh "echo 'performing application or software code quality analysis'"
+            sh "echo 'performing applications or software code quality analysis'"
             sh "mvn sonar:sonar"
         }
     }
