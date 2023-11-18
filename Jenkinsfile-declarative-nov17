@@ -24,6 +24,12 @@ pipeline{
             }
         }
 
+        stage('uploadtonexus'){
+            steps{
+                sh "mvn deploy"
+            }
+        }
+
 
 
 
