@@ -18,6 +18,12 @@ pipeline{
             }
         }
 
+        stage('sonarqube'){
+            steps{
+                sh "mvn sonar:sonar"
+            }
+        }
+
 
 
 
