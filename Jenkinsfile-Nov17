@@ -18,6 +18,19 @@ Pipeline{
                 sh "mvn clean package"
             }
         }
+        stage('codequalityanalysis'){
+            steps{
+                sh "sonar:sonar"
+            }
+        stage('upload2nexus'){
+            steps{
+                sh "mvn deploy package"
+
+                
+            }
+        }    
+            }
+        }
 
         }
         
