@@ -12,6 +12,7 @@ pipeline{
             sh "echo 'my declarative pipeline'"
             git branch: 'Nov17', url: ' https://github.com/Dondriggs/liontech-online-library-web-app.git'
             }
+        }
 
         stage('buildplustest'){
             steps{
@@ -24,7 +25,7 @@ pipeline{
             }
         stage('upload2nexus'){
             steps{
-                sh "mvn deploy package"
+                sh "mvn deploy package to nexus artifacts"
 
                 
             }
