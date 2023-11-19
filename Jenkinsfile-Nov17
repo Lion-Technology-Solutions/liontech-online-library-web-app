@@ -1,16 +1,17 @@
 Pipeline{
     agent any
-    tools(
+    tools{
          maven "maven 3.9.5"
-    )
+    }
+    
 
     stages{
         stage('scmclone'){
         
-            steps 
+            steps {
             sh "echo 'my declarative pipeline'"
             git branch: 'Nov17', url: ' https://github.com/Dondriggs/liontech-online-library-web-app.git'
-
+            }
 
         stage('buildplustest'){
             steps{
