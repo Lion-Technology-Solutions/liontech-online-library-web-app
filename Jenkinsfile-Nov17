@@ -1,12 +1,12 @@
-pipeline{
+pipeline {
     agent any
-    tools{
-         maven "maven3.9.5"
+    tools {
+         maven 'maven3.9.5'
     }
     
 
     stages{
-        stage('scmclone'){
+        stage('clonefromscm'){
         
             steps {
             sh "echo 'my declarative pipeline'"
@@ -20,25 +20,29 @@ pipeline{
             }
         }
         stage('codequalityanalysis'){
+
             steps{
                 sh "sonar:sonar"
             }
+        }
         stage('upload2nexus'){
             steps{
                 sh "mvn deploy package to nexus artifacts"
 
                 
             }
-        stage('deploy to production'){
-            steps{"mvn deploy"}
-
         }
+        stage('deploytotomcat'){
+            steps{
+                sh "mvn deploy to production center"
+
+           }
         }    
             }
         }
-
-
-
-        }
         
-}
+
+
+
+        
+        
