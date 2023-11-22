@@ -25,9 +25,9 @@ pipeline {
                 sh "mvn sonar:sonar"
             }
         }
-        stage('upload2nexus'){
+        stage('uploadtonexus'){
             steps{
-                sh "mvn deploy package nexus artifacts"
+                sh "mvn deploy "
 
                 
             }
