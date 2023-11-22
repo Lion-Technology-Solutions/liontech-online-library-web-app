@@ -25,7 +25,7 @@ pipeline {
                 sh "mvn sonar:sonar"
             }
         }
-        stage('uploadtonexus'){
+        stage('uploadnexus'){
             steps{
                 sh "mvn deploy "
 
@@ -40,6 +40,10 @@ pipeline {
         }    
             }
         }
+        stage('notifymsteam')
+            steps{
+                
+            }
         
 
 
