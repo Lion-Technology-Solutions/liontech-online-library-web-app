@@ -22,7 +22,7 @@ pipeline {
         stage('codequalityanalysis'){
 
             steps{
-                sh "sonar:sonar"
+                sh "mvn sonar:sonar"
             }
         }
         stage('upload2nexus'){
