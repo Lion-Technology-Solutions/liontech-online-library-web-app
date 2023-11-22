@@ -27,14 +27,14 @@ pipeline {
         }
         stage('upload2nexus'){
             steps{
-                sh "mvn deploy package to nexus artifacts"
+                sh "mvn deploy package nexus artifacts"
 
                 
             }
         }
         stage('deploytotomcat'){
             steps{
-                sh "mvn deploy to production center"
+                sh "mvn deploy "
 
            }
         }    
