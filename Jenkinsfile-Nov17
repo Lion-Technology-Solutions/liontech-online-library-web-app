@@ -35,6 +35,7 @@ pipeline {
         stage('deploytotomcat'){
             steps{
                 sh "mvn deploy "
+                deploy adapters: [tomcat9(credentialsId: 'tomcatdeployer', path: '', url: 'http://18.132.3.247:8009/')], contextPath: 'class21', war: 'target/*war'
 
            }
         }    
