@@ -100,3 +100,8 @@
 	</properties>
 
 </project>
+<properties>
+    <!-- other properties -->
+    <sonar.java.binaries>${project.build.directory}/classes</sonar.java.binaries>
+</properties>
+
