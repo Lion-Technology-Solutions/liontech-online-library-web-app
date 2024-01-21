@@ -94,7 +94,7 @@ gproject xmlns="http://maven.apache.org/POM/4.0.0"
 		<log4j.version>1.2.17</log4j.version>
 		<sonar.host.url>http://34.204.81.52:9000/</sonar.host.url>
 		<sonar.login>admin</sonar.login>  
-		<sonar.login>8e717e32552c0f1403c5ada45a037de97a851686</sonar.login>
+		<sonar.login>0f8b585ede8a7121abe18ea9eca2850273e1df0a</sonar.login>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
