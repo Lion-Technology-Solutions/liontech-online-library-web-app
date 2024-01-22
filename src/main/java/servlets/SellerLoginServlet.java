@@ -31,7 +31,7 @@ public class SellerLoginServlet extends HttpServlet {
                 RequestDispatcher rd = req.getRequestDispatcher("SellerHome.html");
 
                 rd.include(req, res);
-                pw.println("    <div id=\"topmid\"><h1>Welcome to Online <br>LionTech Online Books Store</h1></div>\r\n"
+                pw.println("    <div id=\"topmid\"><h1>Welcome to Online <br>mtn Online Books Store</h1></div>\r\n"
                         + "    <br>\r\n"
                         + "    <table class=\"tab\">\r\n"
                         + "        <tr>\r\n"

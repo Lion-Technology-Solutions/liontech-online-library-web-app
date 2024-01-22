@@ -8,7 +8,7 @@ pipeline{
         stage('clonecode4scm'){
             steps{
             sh "echo 'this is declarative pipeline'"
-            git branch: 'nov17', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git' 
+            git branch: 'nov17', url: 'https://github.com/Lion-Technology-Solutions/mtn-online-library-web-app.git' 
             }
         }
 
