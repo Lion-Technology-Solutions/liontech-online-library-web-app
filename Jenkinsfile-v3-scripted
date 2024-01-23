@@ -1,6 +1,17 @@
-node{
-    def mavenHome  = tool name  : 'maven3.9.6'
+pipeline{
+    agent    any
+    tools{
+        maven "maven3.9.6"
+    }
 }
-stage('clone'){
-    git branch: 'nov18', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
+
+stages{
+    stage{
+        steps{
+            sh  "echo cloning from source code"
+            git branch: '', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
+
+        }
+        
+}
 }
