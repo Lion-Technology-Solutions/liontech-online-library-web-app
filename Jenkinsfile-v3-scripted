@@ -1,15 +1,15 @@
 pipeline{
-    agent    any
+    agent any
     tools {
-        maven "maven3.9.6"
+        maven 'maven3.9.6'
     }
 }
 
-stages{
+stages {
     stage('clone'){
         steps{
-            sh "echo 'clone the code'"
-            git branch: '', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
+            sh "echo 'clone'"
         }
     }
 }
+
