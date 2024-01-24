@@ -51,11 +51,11 @@
 		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>CustomerRegisterServlet</servlet-name>
-		<servlet-class>servlets.CustomerRegisterServlet</servlet-class>
+		<servlet-name>CustomerSignupServlet</servlet-name>
+		<servlet-class>servlets.CustomerSignupServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>CustomerRegisterServlet</servlet-name>
+		<servlet-name>CustomerSignupServlet</servlet-name>
 		<url-pattern>/userreg</url-pattern>
 	</servlet-mapping>
 	<servlet>
