@@ -1,15 +1,24 @@
-pipeline{
-    agent any
-    tools {
-        maven 'maven3.9.6'
-    }
+node{
+	def mavenHome = tool name: 'maven3.9.5'
+	stage('clone'){
+	git 'https://github.com/Lion-Technology-Solutions/liontech-web-app-jenkins-cicd.git'
+	}
 }
 
-stages {
-    stage('clone'){
-        steps{
-            sh "echo 'clone'"
-        }
+    stage('build'){
+        sh "${mavenHome}/bin/mvn    clean package"
+
     }
-}
+
+
+
+
+
+
+
+
+
+
+
+
 
