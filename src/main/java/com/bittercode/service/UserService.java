@@ -10,7 +10,7 @@ public interface UserService {
 
     public User login(UserRole role, String email, String password, HttpSession session) throws StoreException;
 
-    public String Signup(UserRole role, User user) throws StoreException;
+    public String Register(UserRole role, User user) throws StoreException;
 
     public boolean isLoggedIn(UserRole role, HttpSession session);
 
