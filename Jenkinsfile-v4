@@ -36,6 +36,11 @@ node{
       input message: "app is ready for release please complete release checklist docs before prod deployment"
     }
   }
+
+  stage('deploy2prod'){
+    sh "echo 'prod deployment'"
+    deploy adapters: [tomcat9(credentialsId: 'v4-22', path: '', url: 'http://3.96.64.159:8009/')], contextPath: 'PRODUCATION', war: 'target/*.war'
+  }
    
    
 
