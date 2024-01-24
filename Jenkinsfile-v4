@@ -21,6 +21,22 @@ node{
     deploy adapters: [tomcat9(credentialsId: 'v4-22', path: '', url: 'http://3.96.64.159:8009/')], contextPath: 'class22-v2', war: 'target/*.war'
   }
 
+  stage('deploy2Test'){
+    sh "echo 'deploying to test'"
+    deploy adapters: [tomcat9(credentialsId: 'v4-22', path: '', url: 'http://3.96.64.159:8009/')], contextPath: 'TEST', war: 'target/*.war'
+  }
 
+  stage('deploy2uat'){
+    sh "echo 'deploying to uat'"
+    deploy adapters: [tomcat9(credentialsId: 'v4-22', path: '', url: 'http://3.96.64.159:8009/')], contextPath: 'STAGING', war: 'target/*.war'
+    }
+  stage('ManualApproval-required'){
+    sh  "echo 'we are practicing continues develivery, therefore approval is required before prod release'"
+    timeout(time:5, unut: 'DAYS'){
+      input message: "app is ready for release please complete release checklist docs before prod deployment"
+    }
+  }
+   
+   
 
 }
