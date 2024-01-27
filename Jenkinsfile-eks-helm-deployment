@@ -48,7 +48,7 @@ pipeline {
         stage ('Helm List') {
           steps {
             script {
-                sh "helm list -A  mtn   --namespace bookstore"
+                sh "helm list -A  "
                 }
             }
         }
