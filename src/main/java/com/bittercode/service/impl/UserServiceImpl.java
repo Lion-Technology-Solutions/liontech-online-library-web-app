@@ -17,7 +17,7 @@ import com.bittercode.util.DBUtil;
 
 public class UserServiceImpl implements UserService {
 
-    private static final String registerUserQuery = "INSERT INTO " + UsersDBConstants.TABLE_USERS
+    private static final String RegisterUserQuery = "INSERT INTO " + UsersDBConstants.TABLE_USERS
             + "  VALUES(?,?,?,?,?,?,?,?)";
 
     private static final String loginUserQuery = "SELECT * FROM " + UsersDBConstants.TABLE_USERS + " WHERE "
@@ -67,11 +67,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String register(UserRole role, User user) throws StoreException {
+    public String Register(UserRole role, User user) throws StoreException {
         String responseMessage = ResponseCode.FAILURE.name();
         Connection con = DBUtil.getConnection();
         try {
-            PreparedStatement ps = con.prepareStatement(registerUserQuery);
+            PreparedStatement ps = con.prepareStatement(RegisterUserQuery);
             ps.setString(1, user.getEmailId());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getFirstName());
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             responseMessage += " : " + e.getMessage();
             if (responseMessage.contains("Duplicate"))
-                responseMessage = "User already registered with this email !!";
+                responseMessage = "User already Registered with this email !!";
             e.printStackTrace();
         }
         return responseMessage;
