@@ -19,6 +19,11 @@ pipeline {
                 sh "mvn clean package"
             }
         }
+
+        stage('Run code quality analysis'){
+            sh "echo  'running code quality inspection on application'"
+            sh  "mvn  sonar:sonar"
+        }
     }
 
 
