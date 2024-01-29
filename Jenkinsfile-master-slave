@@ -1,0 +1,26 @@
+pipeline {
+    agent    dev1
+    tools {
+
+        maven  "maven3.9.6"
+    }
+
+    stages{
+        stage('clonefromscm'){
+            steps{
+                sh "echo 'this my first clone'"
+                git branch: 'slaves', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
+            }
+        }
+
+        stage('Maven Buill'){
+            steps{
+                sh  "echo 'build and package the application'"
+                sh "mvn clean package"
+            }
+        }
+    }
+
+
+
+}
