@@ -26,6 +26,13 @@ pipeline {
                 sh  "mvn  sonar:sonar"
             }
         }
+
+        stage('Upload build artifact into nexus'){
+            steps{
+                sh  "echo  'uploading artifact into nexus'"
+                sh  "mvn  deploy"
+            }
+        }
     }
 
 
