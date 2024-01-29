@@ -36,12 +36,14 @@ pipeline {
                 }
             }
         }
-        stage(
+        stage('Helm Deploy into EKS'){
             steps {
                 script {
                     sh "helm install onlinebookstore  bookstore  --namespace books  --set  image.tag=$BUILD_NUMBER"
                 }
             }
-        )
+        }
+            
+        
     }
 }
