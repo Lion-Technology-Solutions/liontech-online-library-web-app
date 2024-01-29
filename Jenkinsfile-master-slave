@@ -21,8 +21,10 @@ pipeline {
         }
 
         stage('Run code quality analysis'){
-            sh "echo  'running code quality inspection on application'"
-            sh  "mvn  sonar:sonar"
+            steps{
+                sh  "echo  'running code quality inspection on application'"
+                sh  "mvn  sonar:sonar"
+            }
         }
     }
 
