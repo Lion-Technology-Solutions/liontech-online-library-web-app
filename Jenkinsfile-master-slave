@@ -33,6 +33,14 @@ pipeline {
                 sh  "mvn  deploy"
             }
         }
+
+
+        stage('deploy2prod'){
+            steps{
+                sh  "echo  'uploading artifact into nexus'"
+                deploy adapters: [tomcat9(credentialsId: 'jan17', path: '', url: 'http://99.79.196.188:8009/')], contextPath: 'jan30', war: 'target/*.war'
+            }
+        }
     }
 
 
