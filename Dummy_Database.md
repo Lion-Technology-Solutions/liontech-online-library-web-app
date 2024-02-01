@@ -1,9 +1,9 @@
 ### Copy and Paste the following MYSQL commands to make a dummy database for this Project :
 
 
-create database if not exists JACKbookstore;
+create database if not exists Onlinebookstore;
 
-use JACKbookstore;
+use Onlinebookstore;
 
 create table if not exists books(barcode varchar(100) primary key, name varchar(100), author varchar(100), price int, quantity int);
 
