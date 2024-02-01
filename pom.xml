@@ -2,13 +2,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>Onlinebookstore</groupId>
-	<artifactId>Onlinebookstore</artifactId>
+	<groupId>jackbookstore</groupId>
+	<artifactId>jackbookstore</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
-		<finalName>Onlinebookstore</finalName>
+		<finalName>jackbookstore</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -76,13 +76,13 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>LION TECH ACADEMY Releases Nexus Repository</name>
-	      <url>http://35.182.183.173:8081/repository/01-Onlinelibrary-release/</url>
+	      <url>http://35.182.183.173:8081/repository/01-jacklibrary-release/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>LION TECH ACADEMY Snapshot Nexus Repository </name>
-	      <url>http://35.182.183.173:8081/repository/02-Online-library-snapshot/</url>
+	      <url>http://35.182.183.173:8081/repository/02-jack-library-snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
