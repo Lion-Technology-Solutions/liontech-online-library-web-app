@@ -1,0 +1,51 @@
+pipeline {
+    tools {
+        maven 'maven3.9.6'
+    }
+    agent    any 
+    environment {
+        registry  = "418649672840.dkr.ecr.us-east-1.amazonaws.com/succpinn-book-store"
+    }
+
+    stages {
+        stage ('clone from git'){
+            steps{
+                checkout scmGit(branches: [[name: '*/helm-eks']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Felixliontech/liontech-online-library-web-app']])
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh "mvn clean install"
+            }
+        }
+        stage ('Builddockerfrom.war'){
+            steps{
+                script{
+                    dockerImage = docker.build registry
+                    dockerImage.tag("$BUILD_NUMBER")
+                }
+            }
+        }
+
+        stage ('PUSH TO ECR'){
+            steps{
+                script {
+                    sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 418649672840.dkr.ecr.us-east-1.amazonaws.com'
+                    sh  'docker push 418649672840.dkr.ecr.us-east-1.amazonaws.com/succpinn-book-store:$BUILD_NUMBER'
+                }
+            }
+        }
+
+        stage ('Helm Deploy'){
+            steps {
+                script {
+                    sh "helm install succpinn-book-store  succpinn-bookstore  --namespace succpinn  --set  image.tag=$BUILD_NUMBER"
+                }
+            }
+        }
+        
+            
+        
+    }
+}
