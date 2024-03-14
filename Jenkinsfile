@@ -14,11 +14,12 @@ node{
     }
     stage('5deploy2DevEnv'){
         sh "echo 'deploying to dev  environment"
-        deploy adapters: [tomcat9(credentialsId: 'tomcat-deployer', path: '', url: 'http://3.99.154.176:8009/')], contextPath: 'dev ', war: 'target/*.war'
+        deploy adapters: [tomcat9(credentialsId: 'tomcat-deployer', path: '', url: 'http://3.99.154.176:8009/')], contextPath: 'dev', war: 'target/*.war'
     }
     stage('6DeploytoTestENV'){
         sh "echo 'deploy to test Environment' "
         deploy adapters: [tomcat9(credentialsId: 'tomcat-deployer', path: '', url: 'http://3.99.154.176:8009/')], contextPath: 'test', war: 'target/*.war'
+    
     }
     stage('7Deploy2UAT'){
         sh "echo 'deploy to UAT or staging Environment' "
@@ -34,7 +35,7 @@ node{
     stage('9DEPLOY2PROD'){
         sh "sleep 50"
         deploy adapters: [tomcat9(credentialsId: 'tomcat-deployer', path: '', url: 'http://3.99.154.176:8009/')], contextPath: 'production', war: 'target/*.war'
-    }
+     }
     stage('congratulationsforrelease'){
         echo 'congratulations for online library prod release'
 
