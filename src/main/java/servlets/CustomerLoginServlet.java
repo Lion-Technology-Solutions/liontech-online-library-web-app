@@ -37,7 +37,7 @@ public class CustomerLoginServlet extends HttpServlet {
                         + "    <br>\r\n"
                         + "    <table class=\"tab\">\r\n"
                         + "        <tr>\r\n"
-                        + "            <td><p>Welcome "+user.getFirstName()+", Happy Learning !!</p></td>\r\n"
+                        + "            <td><p>Welcome "+user.getFirstName()+", LionTech DevOps Learning !!</p></td>\r\n"
                         + "        </tr>\r\n"
                         + "    </table>");
 
