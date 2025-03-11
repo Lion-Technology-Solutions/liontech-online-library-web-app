@@ -39,7 +39,7 @@ public class CustomerRegisterServlet extends HttpServlet {
         user.setPhone(Long.parseLong(phNo));
         user.setAddress(addr);
         try {
-            String respCode = userService.register(UserRole.CUSTOMER, user);
+            String respCode = userService.Register(UserRole.CUSTOMER, user);
             System.out.println(respCode);
             if (ResponseCode.SUCCESS.name().equalsIgnoreCase(respCode)) {
                 RequestDispatcher rd = req.getRequestDispatcher("CustomerLogin.html");
