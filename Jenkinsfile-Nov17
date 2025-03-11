@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+    tools {
+         maven 'maven3.9.5'
+    }
+    
+
+    stages{
+        stage('clonefromscm'){
+        
+            steps {
+            sh "echo 'my declarative pipeline'"
+            git branch: 'Nov17', url: ' https://github.com/Dondriggs/liontech-online-library-web-app.git'
+            }
+        }
+
+        stage('buildplustest'){
+            steps{
+                sh "mvn clean package"
+            }
+        }
+        stage('codequalityanalysis'){
+
+            steps{
+                sh "mvn sonar:sonar"
+            }
+        }
+        stage('uploadnexus'){
+            steps{
+                sh "mvn deploy "
+
+                
+            }
+        }
+        stage('deploytotomcat'){
+            steps{
+                sh "mvn deploy "
+                deploy adapters: [tomcat9(credentialsId: 'tomcatdeployer', path: '', url: 'http://18.132.3.247:8009/')], contextPath: 'class21', war: 'target/*war'
+
+           }
+        }    
+           
+        stage('sendmsnotification'){
+            steps{
+               office365ConnectorSend message: 'keep trying to do your projects and never give up', webhookUrl: 'https://liontechacademy.webhook.office.com/webhookb2/7de6738b-f601-433e-b0ac-4a9e3b49e636@b290c85e-0692-4ada-8f25-2a3b60aca73e/JenkinsCI/3c10e40c166c4e918e81ce4fcc7d1a8e/90dc930a-1d3a-4c50-9c2d-39d010312f55' 
+            }
+        }
+            
+     
+                
+            }
+}        
+
+
+
+        
+        
