@@ -1,0 +1,84 @@
+pipeline{
+  agent any 
+  tools {
+    maven "maven_v_3.9.5"
+  }  
+  stages {
+    stage('Step1:CloneSRC'){
+      steps{
+        sh "echo 'cloning the latest application version' "
+        git branch: 'felix3', url: 'https://github.com/Felixliontech/liontech-online-library-web-app.git'
+      }
+    }
+    stage('Step2: Test&BuildWithMaven'){
+      steps{
+        sh "echo 'running JUnit-test-cases' "
+        sh "echo 'testing must passed to create artifacts ' "
+        sh "mvn clean package"
+      }
+    }
+    stage('Step3: SonarqubeCodeQualityAnalysis'){
+      steps{
+        sh "echo 'Perfoming CodeQualityAnalysis' "
+        sh "mvn sonar:sonar"
+      }
+    }
+    stage('Step4:UploadArtifactToNexus.'){
+      steps{
+        sh "mvn deploy"
+      }
+    } 
+    stage('Approval'){
+      steps{
+       sh "echo  'application is ready for review and prod release'"
+        timeout(time:5, unit: 'DAYS'){
+        input message: "App is ready for release to prod, please review and sign off"
+        } 
+      }
+    }
+    stage('Step5:DeployToProduction'){
+      steps{
+        deploy adapters: [tomcat9(credentialsId: 'auto-deploy-tomcat', path: '', url: 'http://44.202.135.23:8009/')], contextPath: 'Production', war: 'target/*.war'
+      }
+    }
+    {
+      stage('step6: DeployToUAT'){
+        steps{
+          deploy adapters: [tomcat9(credentialsId: 'auto-deploy-tomcat', path: '', url: 'http://44.202.135.23:8009/')], contextPath: 'Staging', war: 'target/*.war'
+        }
+      }
+    }
+    {
+    stage('step6: MSTeams Notifications!')
+     steps{
+      office365ConnectorSend message: 'SUCCESSFUL APPS DEPLOY TO PRODUCTION', status: 'SUCCESS', webhookUrl: 'https://liontechacademy.webhook.office.com/webhookb2/7de6738b-f601-433e-b0ac-4a9e3b49e636@b290c85e-0692-4ada-8f25-2a3b60aca73e/JenkinsCI/ab45b8b626744bbe9fecf50f3df85fa4/dcc4073d-d28b-49e6-b4ad-6e5219bfe2e8'
+     }
+    }
+}
+  post{
+    always{
+      emailext body: '''Hey! guys
+Please check build status.
+
+Thanks
+Landmark 
++1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'success', to: 'felix@liontechacademy.com'
+    }
+    success{
+      emailext body: '''Hey guys
+Good job build and deployment is successful.
+
+Thanks
+Landmark 
++1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'success', to: 'devopz0711@gmail.com'
+    } 
+    failure{
+      emailext body: '''Hey guys
+Build failed. Please resolve issues.
+
+Thanks
+Landmark 
++1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'success', to: 'paypal-team@gmail.com'
+    }
+  } 
+}
