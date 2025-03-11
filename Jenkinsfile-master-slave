@@ -1,0 +1,48 @@
+pipeline {
+    agent    any
+    tools {
+
+        maven  "maven3.9.6"
+    }
+
+    stages{
+        stage('clonefromscm'){
+            steps{
+                sh "echo 'this my first clone'"
+                git branch: 'slaves', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
+            }
+        }
+
+        stage('Maven Buill'){
+            steps{
+                sh  "echo 'build and package the application'"
+                sh "mvn clean package"
+            }
+        }
+
+        stage('Run code quality analysis'){
+            steps{
+                sh  "echo  'running code quality inspection on application'"
+                sh  "mvn  sonar:sonar"
+            }
+        }
+
+        stage('Upload build artifact into nexus'){
+            steps{
+                sh  "echo  'uploading artifact into nexus'"
+                sh  "mvn  deploy"
+            }
+        }
+
+
+        stage('deploy2prod'){
+            steps{
+                sh  "echo  'uploading artifact into nexus'"
+                deploy adapters: [tomcat9(credentialsId: 'jan17', path: '', url: 'http://99.79.196.188:8009/')], contextPath: 'jan30', war: 'target/*.war'
+            }
+        }
+    }
+
+
+
+}
