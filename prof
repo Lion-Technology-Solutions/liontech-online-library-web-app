@@ -1,1 +1,2 @@
 Took out sonarqube step to trigger build again
+deploy to tomcat failed - now we are troubleshooting deploy to tomcat 
