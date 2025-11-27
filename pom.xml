@@ -76,7 +76,7 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>LION TECH ACADEMY Releases Nexus Repository</name>
-	      <urlhttp://16.52.171.194:8081/repository/prof-release-repo/</url>
+	      <url>http://16.52.171.194:8081/repository/prof-release-repo/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
