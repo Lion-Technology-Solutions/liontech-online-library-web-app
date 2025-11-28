@@ -75,13 +75,13 @@
 	<distributionManagement>
 	    <repository>
 	      <id>nexus</id>
-	      <name>enow Releases Nexus Repository</name>
+	      <name>LION TECH ACADEMY Releases Nexus Repository</name>
 	      <url>http://16.52.171.194:8081/repository/enow-release-repo/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
-	      <name>enow Snapshot Nexus Repository </name>
+	      <name>LION TECH ACADEMY Snapshot Nexus Repository </name>
 	      <url>http://16.52.171.194:8081/repository/enow-snapshot-repo/</url>
 	    </snapshotRepository>
 	    
