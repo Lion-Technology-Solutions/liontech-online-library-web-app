@@ -16,3 +16,6 @@ post {
             echo "Build finished with status: ${currentBuild.currentResult}"
         }
     }
+
+
+    testing
