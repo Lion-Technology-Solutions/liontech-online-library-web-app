@@ -1,1 +1,3 @@
 configuration of jenkins to triger build 
+
+deploy to tomcat failed - now we are troubleshooting deploy to tomcat
