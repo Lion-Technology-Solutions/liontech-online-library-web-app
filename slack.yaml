@@ -1,0 +1,21 @@
+post {
+        success {
+            slackSend(
+                channel: '#jenkins-builds',    // or your desired channel
+                message: "✅ SUCCESS: '${env.JOB_NAME} #${env.BUILD_NUMBER}' (<${env.BUILD_URL}|Open build>)"
+            )
+        }
+        failure {
+            slackSend(
+                channel: '#jenkins-builds',
+                message: "❌ FAILURE: '${env.JOB_NAME} #${env.BUILD_NUMBER}' (<${env.BUILD_URL}|Open build>)"
+            )
+        }
+        always {
+            // Optional summary message
+            echo "Build finished with status: ${currentBuild.currentResult}"
+        }
+    }
+
+
+    testing
