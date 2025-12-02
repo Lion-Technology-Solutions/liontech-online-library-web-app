@@ -7,7 +7,7 @@ pipeline{
     stage('clone from github'){
       steps{
         sh "echo 'cloning the latest application version' "
-        git branch: 'nov29', url: git branch: 'bright', credentialsId: 'TOMCAT-DEPLOYER', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
+        git branch: 'bright', credentialsId: 'TOMCAT-DEPLOYER', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
       }
     }
     stage('3Test+Build'){
