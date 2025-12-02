@@ -82,7 +82,7 @@
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>LION TECH ACADEMY Snapshot Nexus Repository </name>
-	      <url>http://18.188.211.116:8081/repository/oghogho-snapshots/</url>
+	      <url>http://18.188.211.116:8081/repository/oghogho-snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
