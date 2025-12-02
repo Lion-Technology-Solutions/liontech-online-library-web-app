@@ -62,14 +62,6 @@
 			<version>42.6.0</version>
 		</dependency>
 
-		<!--
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.33</version>
-		</dependency>
-		-->
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -79,18 +71,6 @@
 	</dependencies>
 
 	<distributionManagement>
-<<<<<<< HEAD
-		<repository>
-			<id>nexus</id>
-			<name>LION TECH ACADEMY Releases Nexus Repository</name>
-			<url>http://16.52.171.194:8081/repository/bright-release/</url>
-		</repository>
-		<snapshotRepository>
-			<id>nexus</id>
-			<name>LION TECH ACADEMY Snapshot Nexus Repository</name>
-			<url>http://16.52.171.194:8081/repository/bright-snapshot/</url>
-		</snapshotRepository>
-=======
 	    <repository>
 	      <id>nexus</id>
 	      <name>LION TECH ACADEMY Releases Nexus Repository</name>
@@ -99,11 +79,9 @@
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
-	      <name>LION TECH ACADEMY Snapshot Nexus Repository </name>
+	      <name>LION TECH ACADEMY Snapshot Nexus Repository</name>
 	      <url>http://15.223.66.232:8081/repository/prof-snapshots/</url>
 	    </snapshotRepository>
-	    
->>>>>>> 6986633785c1ece9ac60b4b372ba915e81b33898
 	</distributionManagement>
 
 	<properties>
@@ -111,14 +89,8 @@
 		<spring.version>5.1.2.RELEASE</spring.version>
 		<junit.version>4.13.2</junit.version>
 		<log4j.version>1.2.17</log4j.version>
-<<<<<<< HEAD
-		<sonar.host.url>http://35.184.183.106:9000/</sonar.host.url>
-		<sonar.login>fcbc4d3e948876d8cec4b06848cc3348d5c290db</sonar.login>
-=======
 		<sonar.host.url>http://99.79.56.215:9000/</sonar.host.url>
-		<sonar.login>admin</sonar.login>  
 		<sonar.login>squ_910e8c35a9e871a1689944f9fe2a58cd0cac1940</sonar.login>
->>>>>>> 6986633785c1ece9ac60b4b372ba915e81b33898
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
