@@ -16,7 +16,7 @@
         <!-- Fixed: Removed trailing slash from URL -->
         <sonar.host.url>http://99.79.71.118:9000/</sonar.host.url>
         <!-- KEPT: SonarQube token (as requested) -->
-        <sonar.login>sqa_049683085965a482a2a6f01003d38e7cdb0a41db</sonar.login>
+        <sonar.login>squ_57e7753bae0360c100b93151b0a097222b953746</sonar.login>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
