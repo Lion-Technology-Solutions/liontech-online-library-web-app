@@ -14,7 +14,7 @@ pipeline {
         stage('Clone from GitHub') {
             steps {
                 echo 'Cloning the latest application version'
-                git branch: 'bright', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
+                git branch: 'bright', credentialsId: 'd0675080-9533-41b5-84c1-457be97629d3', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
             }
         }
         
