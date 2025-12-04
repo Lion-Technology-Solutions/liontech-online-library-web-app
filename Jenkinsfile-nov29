@@ -54,10 +54,10 @@ pipeline {
                         alternativeDeploymentContext: '', 
                         credentialsId: 'TOMCAT-DEPLOYER', 
                         path: '', 
-                        url: 'http://35.182.68.230:8009/'
+                        url: 'http://35.182.252.210:8009/'
                     )
                 ], 
-                contextPath: 'nov29', 
+                contextPath: 'bright', 
                 war: 'target/*.war'
             }
         }
