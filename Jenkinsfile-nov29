@@ -23,7 +23,6 @@ pipeline {
                 echo 'Running JUnit test cases'
                 echo 'Testing must pass to create artifacts'
                 sh 'mvn clean package'
-                sh 'mvn test'
             }
         }
         
