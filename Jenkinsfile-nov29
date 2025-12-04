@@ -1,64 +1,104 @@
-pipeline{
-  agent any
-  tools {
-    maven "maven3.9.8"
-  }  
-  stages {
-    stage('clone from github'){
-      steps{
-        sh "echo 'cloning the latest application version' "
-      git branch: 'bright', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
-      }
+pipeline {
+    agent any
+    
+    // Poll SCM every minute
+    triggers {
+        pollSCM('* * * * *')  // Every minute
     }
-    stage('3Test+Build'){
-      steps{
-        sh "echo 'running JUnit-test-cases' "
-        sh "echo 'testing must passed to create artifacts ' "
-        sh "mvn clean package"
-        sh "mvn test"
-      }
+    
+    tools {
+        maven "maven3.9.8"
+    }  
+    
+    stages {
+        stage('Clone from GitHub') {
+            steps {
+                echo 'Cloning the latest application version'
+                git branch: 'bright', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
+            }
+        }
+        
+        stage('Test & Build') {
+            steps {
+                echo 'Running JUnit test cases'
+                echo 'Testing must pass to create artifacts'
+                sh 'mvn clean package'
+                sh 'mvn test'
+            }
+        }
+        
+        stage('Code Quality Analysis') {
+            steps {
+                echo 'Performing Code Quality Analysis'
+                sh 'mvn sonar:sonar'
+            }
+        }
+        
+        stage('Upload to Nexus') {
+            steps {
+                // Add Nexus credentials configuration
+                withCredentials([usernamePassword(
+                    credentialsId: 'nexus-credentials', 
+                    usernameVariable: 'NEXUS_USER', 
+                    passwordVariable: 'NEXUS_PASSWORD'
+                )]) {
+                    sh 'mvn deploy -DskipTests'
+                }
+            }
+        }
+        
+        stage('Deploy to Production') {
+            steps {
+                deploy adapters: [
+                    tomcat9(
+                        alternativeDeploymentContext: '', 
+                        credentialsId: 'TOMCAT-DEPLOYER', 
+                        path: '', 
+                        url: 'http://35.182.68.230:8009/'
+                    )
+                ], 
+                contextPath: 'nov29', 
+                war: 'target/*.war'
+            }
+        }
     }
-    stage('4CodeQuality'){
-      steps{
-        sh "echo 'Performing CodeQualityAnalysis' "
-        sh "mvn sonar:sonar"
-      }
-    }
-    stage('5uploadNexus'){
-      steps{
-        sh "mvn deploy"
-      }
-    }
-    stage('8deploy2prod'){
-      steps{
-        deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'TOMCAT-DEPLOYER', path: '', url: 'http://35.182.68.230:8009/')], contextPath: 'nov29', war: 'target/*war'
-      }
-    }
-}
-  post{
-    always{
-      emailext body: '''Hey guys
+    
+    post {
+        always {
+            emailext body: '''Hey guys
 Please check build status.
 
 Thanks
 LionTech 
-+1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'success', to: 'paypal-team@gmail.com'
-    }
-    success{
-      emailext body: '''Hey guys
-Good job build and deployment is successful.
++1 437 215 2483''', 
+            recipientProviders: [buildUser(), developers()], 
+            subject: 'Build Status: ${currentBuild.currentResult}', 
+            to: 'paypal-team@gmail.com,brightliontech@gmail.com'
+        }
+        success {
+            emailext body: '''Hey guys
+Good job! Build and deployment is successful.
 
 Thanks
 LionTech 
-+1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'success', to: 'paypal-team@gmail.com'
-    } 
-    failure{
-      emailext body: '''Hey guys
++1 437 215 2483''', 
+            recipientProviders: [buildUser(), developers()], 
+            subject: 'SUCCESS: Build ${JOB_NAME} - ${BUILD_NUMBER}', 
+            to: 'paypal-team@gmail.com,brightliontech@gmail.com'
+        } 
+        failure {
+            emailext body: '''Hey guys
 Build failed. Please resolve issues.
 
+Failed stage: ${currentBuild.currentBuild.stageName}
+Build URL: ${BUILD_URL}
+
 Thanks
 LionTech 
-+1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'success', to: 'paypal-team@gmail.com'
++1 437 215 2483''', 
+            recipientProviders: [buildUser(), developers()], 
+            subject: 'FAILURE: Build ${JOB_NAME} - ${BUILD_NUMBER}', 
+            to: 'paypal-team@gmail.com,brightliontech@gmail.com'
+        }
     }
-  } 
 }
