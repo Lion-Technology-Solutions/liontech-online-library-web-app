@@ -1,11 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>liontechbookstore</groupId>
 	<artifactId>liontechbookstore</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>  <!-- Changed to RELEASE version -->
 	<packaging>war</packaging>
+	
+	<properties>
+		<jdk.version>1.8</jdk.version>
+		<spring.version>5.1.2.RELEASE</spring.version>
+		<junit.version>4.11</junit.version>
+		<log4j.version>1.2.17</log4j.version>
+		<sonar.host.url>http://35.183.243.95:9000/</sonar.host.url>
+		<!-- ONLY ONE sonar.login property -->
+		<sonar.login>squ_f0c5b0ad54669d217cda2e785feb52be7b3ce80c</sonar.login>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.3.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.28</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>  <!-- Added scope for WAR -->
+		</dependency>
+	</dependencies>
+	
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<finalName>liontechbookstore</finalName>
@@ -48,55 +83,26 @@
 					<warSourceDirectory>WebContent</warSourceDirectory>
 				</configuration>
 			</plugin>
+			<!-- Added deploy plugin configuration -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>3.1.2</version>
+			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
-
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>42.3.7</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.28</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
-		</dependency>
-	</dependencies>
+	
 	<distributionManagement>
-	    <repository>
-	      <id>nexus</id>
-	      <name>LION TECH ACADEMY Releases Nexus Repository</name>
-	      <url>http://3.96.203.109:8081/repository/terry-release-repo/</url>
-	    </repository>
-	    
-	    <snapshotRepository>
-	      <id>nexus</id>
-	      <name>LION TECH ACADEMY Snapshot Nexus Repository </name>
-	      <url>http://3.96.203.109:8081/repository/terry-snapshot-repo/</url>
-	    </snapshotRepository>
-	    
+		<repository>
+			<id>nexus</id>
+			<name>LION TECH ACADEMY Releases Nexus Repository</name>
+			<url>http://3.96.203.109:8081/repository/terry-release-repo/</url>
+		</repository>
+		
+		<snapshotRepository>
+			<id>nexus</id>
+			<name>LION TECH ACADEMY Snapshot Nexus Repository</name>
+			<url>http://3.96.203.109:8081/repository/terry-snapshot-repo/</url>
+		</snapshotRepository>
 	</distributionManagement>
-
-	<properties>
-		<jdk.version>1.8</jdk.version>
-		<spring.version>5.1.2.RELEASE</spring.version>
-		<junit.version>4.11</junit.version>
-		<log4j.version>1.2.17</log4j.version>
-		<sonar.host.url>http://35.183.243.95:9000/</sonar.host.url>
-		<sonar.login>admin</sonar.login>  
-		<sonar.login>squ_f0c5b0ad54669d217cda2e785feb52be7b3ce80c</sonar.login>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-	</properties>
-
 </project>
