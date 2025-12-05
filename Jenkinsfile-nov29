@@ -7,7 +7,7 @@ pipeline{
     stage('clone from github'){
       steps{
         sh "echo 'cloning the latest application version' "
-        git branch: 'nov29', url: 'https://github.com/Lion-Technology-Solutions/liontech-liontech-library-web-app.git'
+        git branch: 'terry', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
       }
     }
     stage('3Test+Build'){
@@ -19,7 +19,7 @@ pipeline{
     }
     stage('4CodeQuality'){       
       steps{
-        sh "echo 'Perfoming CodeQualityAnalysis' "
+        sh "echo 'Performing CodeQualityAnalysis' "
         sh "mvn sonar:sonar"
       }
     }
@@ -30,7 +30,7 @@ pipeline{
     } 
     stage('8deploy2prod'){
       steps{
-        deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'TOMCAT-DEPLOYER', path: '', url: 'http://35.182.68.230:8009/')], contextPath: 'nov29', war: 'target/*war'
+        deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', path: '', url: 'http://3.97.15.34:8009/')], contextPath: 'terry', war: 'target/*.war'
       }
     }
 }
