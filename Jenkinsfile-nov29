@@ -1,43 +1,58 @@
 pipeline{
   agent any 
   triggers {
-    // Polls the GitHub repository every minute
-    pollSCM('* * * * *')
+    pollSCM('* * * * *')  // Keep your 1-minute polling
   }
   tools {
-    maven "maven3.9.8"
-  }  
+    maven "maven3.9.8"     // Note: Your log shows maven3.9.9 is actually being used
+  }
+  
   stages {
-    stage('clone from github'){
+    stage('Clone & Build'){
       steps{
-        sh "echo 'cloning the latest application version' "
+        sh "echo 'Cloning repository and building application' "
         git branch: 'terry', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
-      }
-    }
-    stage('3Test+Build'){
-      steps{
-        sh "echo 'running JUnit-test-cases' "
-        sh "echo 'testing must passed to create artifacts ' "
+        
+        // This ONE command does everything: clean, compile, test, package
+        // No need for separate install/test/validate calls
         sh "mvn clean package"
       }
     }
-    stage('4CodeQuality'){       
+    
+    stage('Code Quality - SonarQube'){
       steps{
-        sh "echo 'Performing CodeQualityAnalysis' "
+        sh "echo 'Performing Code Quality Analysis with SonarQube' "
+        // Run Sonar analysis on the already-built code
         sh "mvn sonar:sonar"
       }
     }
-    stage('5uploadNexus'){
+    
+    stage('Deploy to Nexus'){
       steps{
+        sh "echo 'Uploading artifacts to Nexus repository' "
+        // 'deploy' includes 'install' automatically
         sh "mvn deploy"
       }
-    } 
-    stage('8deploy2prod'){
+    }
+    
+    stage('Deploy to Production Tomcat'){
       steps{
-        deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', path: '', url: 'http://3.97.15.34:8009/')], contextPath: 'terry', war: 'target/*.war'
+        sh "echo 'Deploying WAR to production Tomcat server' "
+        deploy adapters: [
+          tomcat9(
+            alternativeDeploymentContext: '', 
+            credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', 
+            path: '', 
+            url: 'http://3.97.15.34:8009/'
+          )
+        ], 
+        contextPath: 'terry', 
+        war: 'target/*.war'
       }
     }
   }
+  
+  // Your post-build email notifications remain the same
   post{
     always{
       emailext body: '''Hey guys
@@ -45,7 +60,7 @@ Please check build status.
 
 Thanks
 LionTech 
-+1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'success', to: 'paypal-team@gmail.com'
++1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'Build Notification', to: 'paypal-team@gmail.com'
     }
     success{
       emailext body: '''Hey guys
@@ -53,7 +68,7 @@ Good job build and deployment is successful.
 
 Thanks
 LionTech 
-+1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'success', to: 'paypal-team@gmail.com'
++1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'Build SUCCESS', to: 'paypal-team@gmail.com'
     } 
     failure{
       emailext body: '''Hey guys
@@ -61,7 +76,7 @@ Build failed. Please resolve issues.
 
 Thanks
 LionTech 
-+1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'success', to: 'paypal-team@gmail.com'
++1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'Build FAILED', to: 'paypal-team@gmail.com'
     }
-  } 
+  }
 }
