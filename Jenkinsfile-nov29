@@ -1,5 +1,9 @@
 pipeline{
   agent any 
+  triggers {
+    // Polls the GitHub repository every minute
+    pollSCM('* * * * *')
+  }
   tools {
     maven "maven3.9.8"
   }  
@@ -19,7 +23,7 @@ pipeline{
     }
     stage('4CodeQuality'){       
       steps{
-        sh "echo 'Peforming CodeQualityAnalysis' "
+        sh "echo 'Performing CodeQualityAnalysis' "
         sh "mvn sonar:sonar"
       }
     }
@@ -33,7 +37,7 @@ pipeline{
         deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', path: '', url: 'http://3.97.15.34:8009/')], contextPath: 'terry', war: 'target/*.war'
       }
     }
-}
+  }
   post{
     always{
       emailext body: '''Hey guys
