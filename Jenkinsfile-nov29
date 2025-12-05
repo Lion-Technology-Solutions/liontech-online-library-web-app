@@ -4,7 +4,7 @@ pipeline{
     pollSCM('* * * * *')  // Keep your 1-minute polling
   }
   tools {
-    maven "maven3.9.8"     // Note: Your log shows maven3.9.9 is actually being used
+    maven "maven3.9.9"     // Note: Your log shows maven3.9.9 is actually being used
   }
   
   stages {
