@@ -63,4 +63,4 @@ Check Build status.
 
 Lion Techologies''', recipientProviders: [buildUser(), developers(), upstreamDevelopers(), brokenBuildSuspects(), brokenTestsSuspects(), contributor()], subject: 'build status', to: 'info@liontechacademy.com'
   }
-}
+  }
