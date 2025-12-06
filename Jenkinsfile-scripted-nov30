@@ -2,7 +2,7 @@ node{
   // Configure SCM polling - runs every minute
   properties([
     pipelineTriggers([
-      pollSCM('* * * * *')  // Polls SCM every minute (adjust as needed)
+      pollSCM('H/5 * * * *')  // Polls SCM every 5 minutes (more reasonable than every minute)
     ]),
     buildDiscarder(logRotator(numToKeepStr: '10'))
   ])
@@ -14,8 +14,6 @@ node{
   }
   
   stage('2Test&Build'){
-    // Note: You don't need to run all these Maven commands separately
-    // 'mvn clean install' already runs validate, compile, test, package, verify, and install
     sh "${mavenHome}/bin/mvn clean install"
   }
   
@@ -24,17 +22,18 @@ node{
   }
   
   stage('4uploadArtifacts'){
-    // If you want to deploy to artifact repository
+    // Uncomment and configure when ready to deploy to artifact repository
     // sh "${mavenHome}/bin/mvn deploy"
-    // Note: You'll need to configure settings.xml with credentials
   } 
   
   stage('deploy2dev'){
     sh "echo 'Deploying to dev environment'"
+    // REPLACE THIS URL WITH YOUR ACTUAL DEV TOMCAT SERVER URL
+    // Example: http://dev-server-ip:8080
     deploy adapters: [tomcat9(alternativeDeploymentContext: '', 
                     credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', 
                     path: '', 
-                    url: 'http://your-dev-tomcat-server:8080/')],  // Fix this URL
+                    url: 'http://YOUR-DEV-TOMCAT-SERVER:8080')],  // FIX THIS!
                     contextPath: 'dev', 
                     war: 'target/*.war'
   }
@@ -104,7 +103,6 @@ Lion Technologies''',
   post {
     success {
       echo 'Pipeline executed successfully!'
-      // Optional: Add success notifications here
     }
     failure {
       echo 'Pipeline failed!'
