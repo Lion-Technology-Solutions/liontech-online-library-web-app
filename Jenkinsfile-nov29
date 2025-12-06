@@ -11,7 +11,7 @@ pipeline{
     stage('Clone & Build'){
       steps{
         sh "echo 'Cloning repository and building application' "
-        git branch: 'terry', url: 'https://github.com/Lion-Technology-Solutions/liontech-liontech-library-web-app.git'
+        git branch: 'terry', url: 'https://github.com/Lion-Technology-Solutions/online-online-library-web-app.git'
         
         // This ONE command does everything: clean, compile, test, package
         // No need for separate install/test/validate calls
@@ -59,7 +59,7 @@ pipeline{
 Please check build status.
 
 Thanks
-LionTech 
+online 
 +1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'Build Notification', to: 'paypal-team@gmail.com'
     }
     success{
@@ -67,7 +67,7 @@ LionTech
 Good job build and deployment is successful.
 
 Thanks
-LionTech 
+online 
 +1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'Build SUCCESS', to: 'paypal-team@gmail.com'
     } 
     failure{
@@ -75,7 +75,7 @@ LionTech
 Build failed. Please resolve issues.
 
 Thanks
-LionTech 
+online 
 +1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'Build FAILED', to: 'paypal-team@gmail.com'
     }
   }

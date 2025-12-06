@@ -9,7 +9,7 @@ node{
   def mavenHome = tool name: 'maven3.9.9'
   
   stage('1cloneCode'){
-   git branch: 'terry', url: 'https://github.com/Lion-Technology-Solutions/liontech-liontech-library-web-app.git'
+   git branch: 'terry', url: 'https://github.com/Lion-Technology-Solutions/online-online-library-web-app.git'
   }  // Added missing closing brace here
   
   stage('2Test&Build'){
@@ -26,8 +26,8 @@ node{
   
   stage('4uploadArtifacts'){
     //sh "${mavenHome}/bin/mvn deploy"
-    //http://52.53.227.31:8191/liontech/repository/tesla-fe-snapshots/
-    //http://52.53.227.31:8191/liontech/repository/tesla-fe-releases/
+    //http://52.53.227.31:8191/online/repository/tesla-fe-snapshots/
+    //http://52.53.227.31:8191/online/repository/tesla-fe-releases/
     // vi pom.xml and added repository details   
     // vi setting.xml and add AUTHENTICATION details  
   } 
@@ -73,6 +73,6 @@ node{
 
 Check Build status.
 
-Lion Techologies''', recipientProviders: [buildUser(), developers(), upstreamDevelopers(), brokenBuildSuspects(), brokenTestsSuspects(), contributor()], subject: 'build status', to: 'info@liontechacademy.com'
+Lion Techologies''', recipientProviders: [buildUser(), developers(), upstreamDevelopers(), brokenBuildSuspects(), brokenTestsSuspects(), contributor()], subject: 'build status', to: 'info@onlineacademy.com'
   }
 }
