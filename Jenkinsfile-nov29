@@ -11,7 +11,7 @@ pipeline{
     stage('Clone & Build'){
       steps{
         sh "echo 'Cloning repository and building application' "
-        git branch: 'terry', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
+        git branch: 'terry', url: 'https://github.com/Lion-Technology-Solutions/liontech-liontech-library-web-app.git'
         
         // This ONE command does everything: clean, compile, test, package
         // No need for separate install/test/validate calls
