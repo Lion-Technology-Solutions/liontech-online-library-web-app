@@ -1,20 +1,23 @@
 node{
-  // Configure SCM polling - runs every minute
+  // Add SCM polling at the top
   properties([
     pipelineTriggers([
-      pollSCM('H/5 * * * *')  // Polls SCM every 5 minutes (more reasonable than every minute)
-    ]),
-    buildDiscarder(logRotator(numToKeepStr: '10'))
+      pollSCM('* * * * *')
+    ])
   ])
   
   def mavenHome = tool name: 'maven3.9.9'
   
   stage('1cloneCode'){
-    git branch: 'terry', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
-  }
+   git branch: 'terry', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
+  }  // Added missing closing brace here
   
   stage('2Test&Build'){
-    sh "${mavenHome}/bin/mvn clean install"
+    sh "${mavenHome}/bin/mvn install"
+    sh "${mavenHome}/bin/mvn test"
+    sh "${mavenHome}/bin/mvn validate"
+    sh "${mavenHome}/bin/mvn clean package"
+    //bat "${mavenHome}/bin/mvn clean package"
   }
   
   stage('3codeQuality'){
@@ -22,108 +25,54 @@ node{
   }
   
   stage('4uploadArtifacts'){
-    // Uncomment and configure when ready to deploy to artifact repository
-    // sh "${mavenHome}/bin/mvn deploy"
+    //sh "${mavenHome}/bin/mvn deploy"
+    //http://52.53.227.31:8191/liontech/repository/tesla-fe-snapshots/
+    //http://52.53.227.31:8191/liontech/repository/tesla-fe-releases/
+    // vi pom.xml and added repository details   
+    // vi setting.xml and add AUTHENTICATION details  
   } 
   
   stage('deploy2dev'){
-    sh "echo 'Deploying to dev environment'"
-    // REPLACE THIS URL WITH YOUR ACTUAL DEV TOMCAT SERVER URL
-    // Example: http://dev-server-ip:8080
-    deploy adapters: [tomcat9(alternativeDeploymentContext: '', 
-                    credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', 
-                    path: '', 
-                    url: 'http://YOUR-DEV-TOMCAT-SERVER:8080')],  // FIX THIS!
-                    contextPath: 'dev', 
-                    war: 'target/*.war'
+    sh "echo 'deploy to dev'  "
+    deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', path: '', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git')], contextPath: 'dev', war: 'target/*.war'
   }
 
   stage('deploy2Test'){
-    sh "echo 'Deploying to Test environment'"
-    deploy adapters: [tomcat9(alternativeDeploymentContext: '', 
-                    credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', 
-                    path: '', 
-                    url: 'http://3.97.15.34:8009/')], 
-                    contextPath: 'Test', 
-                    war: 'target/*.war'
+    sh "echo 'deploy to Test'  "
+    deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', path: '', url: 'http://3.97.15.34:8009/')], contextPath: 'Test', war: 'target/*.war'
   }
 
   stage('5deploy2UAT'){
-    sh "echo 'Deploying to UAT environment'"
-    deploy adapters: [tomcat9(alternativeDeploymentContext: '', 
-                    credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', 
-                    path: '', 
-                    url: 'http://3.97.15.34:8009/')], 
-                    contextPath: 'UAT', 
-                    war: 'target/*.war'
+    sh "echo 'deploy to UAT'  "
+    deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', path: '', url: 'http://3.97.15.34:8009/')], contextPath: 'UAT', war: 'target/*.war'
   }
   
   stage('6approvalGate'){
-    sh "echo 'Application ready for production deployment. Waiting for approval...'"
-    timeout(time: 5, unit: 'DAYS') {
-      input message: 'Application ready for PRODUCTION deployment. Please review and approve.',
-            id: 'prod-approval',
-            submitter: 'admin,dev-team'
+    sh "echo 'ready for review' "
+    timeout(time:5, unit:'DAYS') {
+      input message: 'Application ready for deployment, Please review and approve'
     }
   }
   
   stage('7deploy2Prod'){
-    sh "echo 'Deploying to PRODUCTION environment...'"
-    sh "sleep 30"  // Optional: Give time for any last-minute checks
-    
-    deploy adapters: [tomcat9(alternativeDeploymentContext: '', 
-                    credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', 
-                    path: '', 
-                    url: 'http://3.97.15.34:8009/')], 
-                    contextPath: 'PROD', 
-                    war: 'target/*.war'
+    sh "sleep  50"
+    deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', path: '', url: 'http://3.97.15.34:8009/')], contextPath: 'PROD', war: 'target/*.war'
   }
 
   stage('congratulations') {
-    echo 'Congratulations Lion Tech Engineers! Deployment successful!'
+    echo 'congratulations  Lion Tech Engineers'
   }
+
+//   stage ('send MS Teams Notifications'){
+
+//    slackSend channel: 'https://automation--jenkins.slack.com/customize/icon', message: 'check build status'
+//   }
             
   stage('8emailNotification'){
     emailext body: '''Hi All,
 
-The build and deployment process has completed successfully.
+Check Build status.
 
-Application Status: ${BUILD_STATUS}
-Build Number: ${BUILD_NUMBER}
-Build URL: ${BUILD_URL}
-
-Thanks,
-Lion Technologies''', 
-           recipientProviders: [buildUser(), developers(), upstreamDevelopers()], 
-           subject: "Build Status: ${currentBuild.currentResult} - ${JOB_NAME} #${BUILD_NUMBER}",
-           to: 'info@liontechacademy.com'
-  }
-  
-  // Post-build actions
-  post {
-    success {
-      echo 'Pipeline executed successfully!'
-    }
-    failure {
-      echo 'Pipeline failed!'
-      emailext body: '''Hi Team,
-
-The build has FAILED!
-
-Build Number: ${BUILD_NUMBER}
-Job: ${JOB_NAME}
-Failed Stage: ${STAGE_NAME}
-Build URL: ${BUILD_URL}
-
-Please investigate immediately.
-
-Thanks,
-Lion Technologies''',
-             subject: "URGENT: Build FAILED - ${JOB_NAME} #${BUILD_NUMBER}",
-             to: 'info@liontechacademy.com,dev-team@liontechacademy.com'
-    }
-    unstable {
-      echo 'Pipeline is unstable!'
-    }
+Lion Techologies''', recipientProviders: [buildUser(), developers(), upstreamDevelopers(), brokenBuildSuspects(), brokenTestsSuspects(), contributor()], subject: 'build status', to: 'info@liontechacademy.com'
   }
 }
