@@ -34,7 +34,7 @@ node{
   
   stage('deploy2dev'){
     sh "echo 'deploy to dev'  "
-    deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', path: '', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git')], contextPath: 'dev', war: 'target/*.war'
+   deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'e293ab7a-6c16-4fcc-9c2a-19c6c66d9e6e', path: '', url: 'http://3.97.15.34:8009/')], contextPath: 'dev', war: 'target/*.war'
   }
 
   stage('deploy2Test'){
