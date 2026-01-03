@@ -30,7 +30,7 @@ pipeline{
     } 
     stage('8deploy2prod'){
       steps{
-       deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'pipeline', path: '', url: 'http://18.116.42.32:8009/')], contextPath: 'ovwig', war: 'target/*war'
+       deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'b8a34f10-df30-43a5-9d17-356d7828c88b', path: '', url: 'http://18.116.42.32:8009/')], contextPath: 'oghogho', war: 'target/*war'
       }
     }
 }
