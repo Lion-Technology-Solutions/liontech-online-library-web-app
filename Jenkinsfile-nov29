@@ -1,13 +1,13 @@
 pipeline{
   agent any 
   tools {
-    maven "maven3.9.8"
+    maven "maven3.9.9"
   }  
   stages {
     stage('clone from github'){
       steps{
         sh "echo 'cloning the latest application version' "
-        git branch: 'nov29', url: 'https://github.com/Lion-Technology-Solutions/liontech-liontech-library-web-app.git'
+        git branch: 'ovwig', url: 'https://github.com/Lion-Technology-Solutions/liontech-online-library-web-app.git'
       }
     }
     stage('3Test+Build'){
