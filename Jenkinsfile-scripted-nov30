@@ -46,7 +46,7 @@ node{
   stage('7deploy2Prod'){
     sh "sleep  50"
     deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'jan05', path: '', url: 'http://3.99.243.153:8009/')], contextPath: 'PROD', war: 'target/*.war'
-
+  }
   stage('congratulations') {
 
     echo 'congratulations  Lion Tech Engineers'
