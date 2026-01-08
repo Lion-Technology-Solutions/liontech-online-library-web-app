@@ -9,15 +9,11 @@ node{
     sh "${mavenHome}/bin/mvn validate"
     sh "${mavenHome}/bin/mvn clean package"
     //bat "${mavenHome}/bin/mvn clean package"
-
-  stage('Code Quality') {
-    steps {
-        withSonarQubeEnv('sonar-server') {
-            sh 'mvn clean verify sonar:sonar'
-        }
-    }
-}
-  stage('4uploadArtifacts'){
+ }
+  stage('3codeQuality'){
+    sh "${mavenHome}/bin/mvn  sonar:sonar"
+  }
+stage('4uploadArtifacts'){
     //sh "${mavenHome}/bin/mvn deploy"
     //http://52.53.227.31:8191/liontech/repository/tesla-fe-snapshots/
     //http://52.53.227.31:8191/liontech/repository/tesla-fe-releases/
