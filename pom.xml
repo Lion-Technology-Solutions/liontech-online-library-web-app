@@ -14,9 +14,9 @@
         <junit.version>4.13.2</junit.version>
         <log4j.version>1.2.17</log4j.version>
         <!-- Fixed: Removed trailing slash from URL -->
-        <sonar.host.url>http://99.79.71.118:9000/</sonar.host.url>
+        <sonar.host.url>http://15.223.67.248:9000/</sonar.host.url>
         <!-- KEPT: SonarQube token (as requested) -->
-        <sonar.login>squ_57e7753bae0360c100b93151b0a097222b953746</sonar.login>
+        <sonar.login>squ_6b7fe118b91adad66f098730dcc076555b185af3</sonar.login>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
