@@ -136,7 +136,7 @@
         <snapshotRepository>
             <id>nexus</id>
             <name>LION TECH ACADEMY Snapshot Nexus Repository</name>
-            <url>http://15.223.5.161:8081/repository/terry-snapshot-repo/</url>
+            <url>http://35.183.62.242:8081/repository/bright-snapshot-repo/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
