@@ -38,8 +38,8 @@ pipeline {
                 // Add Nexus credentials configuration
                 withCredentials([usernamePassword(
                     credentialsId: 'nexus-credentials', 
-                    usernameVariable: 'NEXUS_USER', 
-                    passwordVariable: 'NEXUS_PASSWORD'
+                    usernameVariable: 'admin', 
+                    passwordVariable: 'bright'
                 )]) {
                     sh 'mvn deploy -DskipTests'
                 }
