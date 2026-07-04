@@ -1,9 +1,9 @@
 ### Copy and Paste the following MYSQL commands to make a dummy database for this Project :
 
 
-create database if not exists liontechbookstore;
+create database if not exists brice-bookstorebookstore;
 
-use liontechbookstore;
+use brice-bookstorebookstore;
 
 create table if not exists books(barcode varchar(100) primary key, name varchar(100), author varchar(100), price int, quantity int);
 

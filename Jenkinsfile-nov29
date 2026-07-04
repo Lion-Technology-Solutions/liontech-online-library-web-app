@@ -7,7 +7,7 @@ pipeline{
     stage('clone from github'){
       steps{
         sh "echo 'cloning the latest application version' "
-        git branch: 'nov29', url: 'https://github.com/Lion-Technology-Solutions/liontech-liontech-library-web-app.git'
+        git branch: 'nov29', url: 'https://github.com/Lion-Technology-Solutions/brice-bookstore-brice-bookstore-library-web-app.git'
       }
     }
     stage('3Test+Build'){
@@ -40,7 +40,7 @@ pipeline{
 Please check build status.
 
 Thanks
-LionTech 
+brice-bookstore 
 +1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'success', to: 'paypal-team@gmail.com'
     }
     success{
@@ -48,7 +48,7 @@ LionTech
 Good job build and deployment is successful.
 
 Thanks
-LionTech 
+brice-bookstore 
 +1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'success', to: 'paypal-team@gmail.com'
     } 
     failure{
@@ -56,7 +56,7 @@ LionTech
 Build failed. Please resolve issues.
 
 Thanks
-LionTech 
+brice-bookstore 
 +1 437 215 2483''', recipientProviders: [buildUser(), developers()], subject: 'success', to: 'paypal-team@gmail.com'
     }
   } 
