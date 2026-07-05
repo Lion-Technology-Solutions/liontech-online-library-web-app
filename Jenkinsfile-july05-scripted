@@ -1,0 +1,200 @@
+node {
+
+    /*
+     * Jenkins Global Tool Configuration names
+     * Make sure these names match exactly in Jenkins:
+     * Manage Jenkins > Tools
+     * def  = function 
+     */
+    def mvnHome = tool name: 'Maven-3.9.6', type: 'maven'
+    def jdkHome = tool name: 'JDK-17', type: 'jdk'
+
+    /*
+     * Environment variables
+     */
+    env.JAVA_HOME = "${jdkHome}"
+    env.PATH = "${mvnHome}/bin:${jdkHome}/bin:${env.PATH}"
+
+    /*
+     * Application variables
+     */
+    def appName = "mtn-uganda-devops-app"
+    def warName = "target/*.war"
+
+    /*
+     * Nexus details
+     */
+    def nexusUrl = "http://YOUR_NEXUS_SERVER:8081"
+    def nexusRepo = "maven-releases"
+    def groupId = "com.mtn.uganda"
+    def artifactId = "mtn-devops-app"
+    def version = "1.0.${BUILD_NUMBER}"
+
+    /*
+     * Tomcat details
+     */
+    def tomcatUrl = "http://YOUR_TOMCAT_SERVER:8080"
+    def tomcatContext = "mtn-app"
+
+    /*
+     * WhatsApp notification details
+     * This example uses Twilio WhatsApp API.
+     * You can also replace this with Meta WhatsApp Cloud API.
+     */
+    def whatsappFrom = "whatsapp:+14155238886"       // Twilio sandbox or approved WhatsApp number
+    def whatsappTo = "whatsapp:+256XXXXXXXXX"        // Your Uganda WhatsApp number
+
+    try {
+
+        stage('Notify Build Started') {
+            sendWhatsAppNotification(
+                whatsappFrom,
+                whatsappTo,
+                "Jenkins build started for ${appName}. Build Number: ${BUILD_NUMBER}"
+            )
+        }
+
+        stage('Checkout Source Code') {
+            git branch: 'main',
+                credentialsId: 'github-credentials',
+                url: 'https://github.com/YOUR_ORG/YOUR_REPO.git'
+        }
+
+        stage('Maven Clean Compile') {
+            sh 'mvn clean compile'
+        }
+
+         }
+
+        stage('Maven Clean Compile') {
+            sh 'mvn clean install'
+        }
+
+        stage('Run Unit Tests') {
+            sh 'mvn test'
+        }
+
+        stage('SonarQube Code Analysis') {
+            withSonarQubeEnv('SonarQube-Server') {
+                sh """
+                    mvn sonar:sonar \
+                    -Dsonar.projectKey=${appName} \
+                    -Dsonar.projectName=${appName} \
+                    -Dsonar.java.binaries=target/classes
+                """
+            }
+        }
+
+        stage('SonarQube Quality Gate') {
+            timeout(time: 5, unit: 'MINUTES') {
+                def qualityGate = waitForQualityGate()
+
+                if (qualityGate.status != 'OK') {
+                    error "Pipeline stopped because SonarQube Quality Gate failed: ${qualityGate.status}"
+                }
+            }
+        }
+
+        stage('Package Application') {
+            sh 'mvn clean package -DskipTests'
+        }
+
+        stage('Upload Artifact to Nexus') {
+            withCredentials([
+                usernamePassword(
+                    credentialsId: 'nexus-credentials',
+                    usernameVariable: 'NEXUS_USER',
+                    passwordVariable: 'NEXUS_PASSWORD'
+                )
+            ]) {
+                sh """
+                    mvn deploy:deploy-file \
+                    -DgroupId=${groupId} \
+                    -DartifactId=${artifactId} \
+                    -Dversion=${version} \
+                    -Dpackaging=war \
+                    -Dfile=${warName} \
+                    -DrepositoryId=nexus \
+                    -Durl=${nexusUrl}/repository/${nexusRepo}/ \
+                    -DgeneratePom=true \
+                    -Dusername=${NEXUS_USER} \
+                    -Dpassword=${NEXUS_PASSWORD}
+                """
+            }
+        }
+
+        stage('Deploy to Tomcat') {
+            withCredentials([
+                usernamePassword(
+                    credentialsId: 'tomcat-credentials',
+                    usernameVariable: 'TOMCAT_USER',
+                    passwordVariable: 'TOMCAT_PASSWORD'
+                )
+            ]) {
+                sh """
+                    curl -u ${TOMCAT_USER}:${TOMCAT_PASSWORD} \
+                    --upload-file target/*.war \
+                    "${tomcatUrl}/manager/text/deploy?path=/${tomcatContext}&update=true"
+                """
+            }
+        }
+
+        stage('Notify Build Success') {
+            sendWhatsAppNotification(
+                whatsappFrom,
+                whatsappTo,
+                "Jenkins build SUCCESSFUL for ${appName}. Build Number: ${BUILD_NUMBER}. Deployed to Tomcat: ${tomcatUrl}/${tomcatContext}"
+            )
+        }
+
+    } catch (Exception e) {
+
+        stage('Notify Build Failure') {
+            sendWhatsAppNotification(
+                whatsappFrom,
+                whatsappTo,
+                "Jenkins build FAILED for ${appName}. Build Number: ${BUILD_NUMBER}. Error: ${e.getMessage()}"
+            )
+        }
+
+        currentBuild.result = 'FAILURE'
+        throw e
+
+    } finally {
+
+        stage('Archive Artifact') {
+            archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+        }
+
+        stage('Publish Test Results') {
+            junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
+        }
+    }
+}
+
+/*
+ * WhatsApp Notification Function using Twilio API
+ *
+ * Required Jenkins credential:
+ * credentialsId: twilio-credentials
+ * Username: Twilio Account SID
+ * Password: Twilio Auth Token
+ */
+def sendWhatsAppNotification(String fromNumber, String toNumber, String messageBody) {
+
+    withCredentials([
+        usernamePassword(
+            credentialsId: 'twilio-credentials',
+            usernameVariable: 'TWILIO_ACCOUNT_SID',
+            passwordVariable: 'TWILIO_AUTH_TOKEN'
+        )
+    ]) {
+        sh """
+            curl -X POST https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json \
+            --data-urlencode "From=${fromNumber}" \
+            --data-urlencode "To=${toNumber}" \
+            --data-urlencode "Body=${messageBody}" \
+            -u ${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}
+        """
+    }
+}
