@@ -94,7 +94,7 @@
 		<log4j.version>1.2.17</log4j.version>
 		<sonar.host.url>http://44.195.45.79:9000/</sonar.host.url>
 		<sonar.login>sheka</sonar.login>  
-		<sonar.login>sqp_9ec0b94de38083d22bb352f75b58994ad1856fc6</sonar.login>
+		<sonar.login>sqp_137d4d9dc9aa836b70a8f08bad23f03f2e268fd1</sonar.login>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
