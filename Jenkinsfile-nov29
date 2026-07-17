@@ -1,7 +1,7 @@
 pipeline{
   agent any 
   tools{
-    maven "maven3.9.16"
+    maven "maven"
   }  
   stages {
     stage('clone from github'){
